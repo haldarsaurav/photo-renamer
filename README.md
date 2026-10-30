@@ -13,6 +13,37 @@ extensions, and restore the most recent batch with Undo.
 · [Contribute](CONTRIBUTING.md)
 · [MIT license](LICENSE)
 
+## See it in action
+
+Real app captures using generated sample photos: preview the names, switch the
+number position, confirm a batch, rename, and restore the original names with
+Undo. The walkthrough also shows folder naming and the built-in Help tab.
+
+![Animated walkthrough of Photo Renamer: preview, number placement, confirmation, rename, Undo, folder names and Help](docs/images/walkthrough.gif)
+
+The animation uses real window captures with edited pauses and transitions.
+For still images or a closer look, use the gallery below. Details about the
+sample data and capture process are in [MEDIA.md](docs/MEDIA.md).
+
+## Screenshots
+
+| Photo-name preview | Shared folder-name preview |
+| --- | --- |
+| [![Photo Renamer showing new photo names before applying changes](docs/images/photos.png)](docs/images/photos.png) | [![Photo Renamer showing folder names with numbered suffixes](docs/images/folders.png)](docs/images/folders.png) |
+
+<details>
+<summary>Number-at-start preview and Help & safety</summary>
+
+**Numbers at the start**
+
+![Photo Renamer showing incremental numbers before each folder-derived photo name](docs/images/number-at-start.png)
+
+**Help & safety**
+
+![Photo Renamer Help and safety tab with instructions for both naming modes and recovery](docs/images/help.png)
+
+</details>
+
 ## Features
 
 - **Photo names:** `Holiday_1.jpg` or `1_Holiday.jpg`; each folder restarts at 1.
