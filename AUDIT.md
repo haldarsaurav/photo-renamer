@@ -2,6 +2,22 @@
 
 Scope: local review of the photo and folder rename engines, history validation, rollback and recovery, UI state management, and the new dark interface. This is a focused code and regression review, not a third-party security certification.
 
+## v1.1 redesign verification
+
+The [Unslop design report](docs/REDESIGN.md) records the audit, direction and
+nine visual passes. The photo and folder transaction engines were unchanged.
+The 110-assertion regression suite passed, the native app was rebuilt, and
+eight generated photos were renamed across two folders and restored with
+Undo through the actual UI. Both numbering positions, the shared-folder-name
+preview and F1 Help were inspected with isolated sample files and history.
+
+Bundled IBM Plex fonts are loaded privately into the process without system
+installation or runtime downloads. Releases include their OFL license. Key
+text and action contrast pairs were measured above 4.5:1. The public-source
+scan was rerun, and new screenshots and video were checked for personal data.
+The real-app walkthrough and HTML reconstruction used for the Unslop story
+are explicitly distinguished in the README and media documentation.
+
 ## Fixed or strengthened
 
 1. **Directory replacement detection.** The earlier engine used canonical paths as directory identity. Replacing a folder at the same path could evade that comparison if photo size and timestamps also matched. New plans and histories additionally record Windows volume and directory IDs, and validate them before mutation and during recovery. A regression recreates this exact case.

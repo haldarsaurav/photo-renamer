@@ -18,29 +18,19 @@ internal static class CreateIcon
         using (var g = Graphics.FromImage(b))
         {
             g.SmoothingMode = SmoothingMode.AntiAlias; g.PixelOffsetMode = PixelOffsetMode.HighQuality; g.ScaleTransform(size / 256F, size / 256F);
-            using (var shape = Round(4, 4, 248, 248, 55))
-            using (var fill = new LinearGradientBrush(new Point(20, 10), new Point(220, 250), Color.FromArgb(118, 108, 255), Color.FromArgb(67, 47, 196))) g.FillPath(fill, shape);
-            using (var shadow = Round(48, 57, 164, 150, 19)) using (var brush = new SolidBrush(Color.FromArgb(40, 24, 14, 95))) g.FillPath(brush, shadow);
-            g.TranslateTransform(128, 126); g.RotateTransform(-12); g.TranslateTransform(-128, -126);
-            using (var back = Round(38, 48, 162, 145, 17)) using (var brush = new SolidBrush(Color.FromArgb(130, 255, 255, 255))) g.FillPath(brush, back);
-            g.ResetTransform(); g.ScaleTransform(size / 256F, size / 256F);
-            using (var card = Round(51, 56, 157, 145, 17)) using (var white = new SolidBrush(Color.FromArgb(252, 252, 255))) g.FillPath(white, card);
-            using (var image = Round(64, 69, 131, 91, 8))
-            {
-                using (var sky = new SolidBrush(Color.FromArgb(228, 225, 255))) g.FillPath(sky, image);
-                g.SetClip(image);
-                using (var sun = new SolidBrush(Color.FromArgb(255, 195, 95))) g.FillEllipse(sun, 152, 82, 23, 23);
-                using (var mountain = new SolidBrush(Color.FromArgb(139, 126, 239))) g.FillPolygon(mountain, new[] { new Point(58, 160), new Point(100, 111), new Point(135, 150), new Point(161, 120), new Point(202, 163) });
-                using (var mountain = new SolidBrush(Color.FromArgb(93, 76, 205))) g.FillPolygon(mountain, new[] { new Point(65, 165), new Point(119, 132), new Point(143, 148), new Point(173, 122), new Point(203, 165) });
-                g.ResetClip();
-            }
-            using (var line = new Pen(Color.FromArgb(175, 165, 236), 6)) { line.StartCap = line.EndCap = LineCap.Round; g.DrawLine(line, 71, 178, 120, 178); }
-            using (var fill = new SolidBrush(Color.FromArgb(105, 240, 197))) g.FillEllipse(fill, 153, 153, 78, 78);
-            using (var line = new Pen(Color.FromArgb(29, 82, 83), 7))
+            using (var shape = Round(4, 4, 248, 248, 48))
+            using (var fill = new SolidBrush(Color.FromArgb(28, 28, 29)))
+            using (var edge = new Pen(Color.FromArgb(55, 55, 57), 2)) { g.FillPath(fill, shape); g.DrawPath(edge, shape); }
+            using (var line = new Pen(Color.FromArgb(223, 182, 108), 8))
             {
                 line.StartCap = line.EndCap = LineCap.Round;
-                g.DrawLine(line, 184, 174, 177, 210); g.DrawLine(line, 202, 174, 195, 210);
-                g.DrawLine(line, 172, 186, 211, 186); g.DrawLine(line, 170, 199, 209, 199);
+                line.LineJoin = LineJoin.Round;
+                using (var frame = Round(48, 36, 160, 184, 16)) g.DrawPath(line, frame);
+                g.DrawLines(line, new[] { new Point(68, 132), new Point(103, 96), new Point(130, 122), new Point(152, 100), new Point(188, 136) });
+                g.DrawEllipse(line, 157, 65, 13, 13);
+                g.DrawLine(line, 76, 184, 108, 184);
+                g.DrawLines(line, new[] { new Point(143, 168), new Point(154, 160), new Point(154, 192) });
+                g.DrawLine(line, 141, 192, 168, 192);
             }
         }
         return b;

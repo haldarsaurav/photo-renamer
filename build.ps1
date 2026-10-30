@@ -15,7 +15,10 @@ try {
     if ($LASTEXITCODE -ne 0) { throw 'Icon build failed.' }
     & $iconCompiler $outputPath
     if ($LASTEXITCODE -ne 0) { throw 'Icon generation failed.' }
-    & $compiler /nologo /target:winexe /optimize+ /utf8output ('/out:' + (Join-Path $outputPath 'Photo Renamer.exe')) /win32manifest:app.manifest ('/win32icon:' + (Join-Path $outputPath 'app.ico')) ('/resource:' + (Join-Path $outputPath 'app.png') + ',PhotoRenamer.Icon.png') /reference:System.dll /reference:System.Core.dll /reference:System.Drawing.dll /reference:System.Windows.Forms.dll /reference:System.Web.Extensions.dll PhotoRenamer.Core.cs FolderRenamer.cs FolderPicker.cs DarkTheme.cs PhotoRenamer.cs
+    $fontResources = @('IBMPlexSans-Regular','IBMPlexSans-Medium','IBMPlexMono-Regular') | ForEach-Object {
+        '/resource:assets/fonts/' + $_ + '.ttf,PhotoRenamer.' + $_ + '.ttf'
+    }
+    & $compiler /nologo /target:winexe /optimize+ /utf8output ('/out:' + (Join-Path $outputPath 'Photo Renamer.exe')) /win32manifest:app.manifest ('/win32icon:' + (Join-Path $outputPath 'app.ico')) ('/resource:' + (Join-Path $outputPath 'app.png') + ',PhotoRenamer.Icon.png') @fontResources /reference:System.dll /reference:System.Core.dll /reference:System.Drawing.dll /reference:System.Windows.Forms.dll /reference:System.Web.Extensions.dll PhotoRenamer.Core.cs FolderRenamer.cs FolderPicker.cs DarkTheme.cs PhotoRenamer.cs
     if ($LASTEXITCODE -ne 0) { throw 'Build failed.' }
     Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'Photo Renamer.exe.config') -Destination $outputPath -Force
     Write-Output 'Built dist/Photo Renamer.exe (or the supplied output directory).'

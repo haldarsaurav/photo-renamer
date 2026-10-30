@@ -5,7 +5,6 @@ Input captures live in the ignored .build/media-frames directory.
 """
 from __future__ import annotations
 
-import os
 from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont, ImageOps
@@ -39,12 +38,12 @@ STEPS = (
 )
 
 WIDTH, VIEW_HEIGHT, CAPTION_HEIGHT = 1100, 804, 96
-BACKGROUND = (13, 18, 29)
+BACKGROUND = (22, 22, 23)
 
 
 def font(size: int, bold: bool = False) -> ImageFont.ImageFont:
-    filename = "segoeuib.ttf" if bold else "segoeui.ttf"
-    candidate = Path(os.environ.get("WINDIR", "")) / "Fonts" / filename
+    filename = "IBMPlexSans-Medium.ttf" if bold else "IBMPlexSans-Regular.ttf"
+    candidate = ROOT / "assets" / "fonts" / filename
     try:
         return ImageFont.truetype(str(candidate), size)
     except OSError:
@@ -64,11 +63,11 @@ for index, (source, title, description, duration) in enumerate(STEPS, 1):
             image = ImageOps.contain(image, (WIDTH, VIEW_HEIGHT), Image.Resampling.LANCZOS)
         scene.paste(image, ((WIDTH - image.width) // 2, (VIEW_HEIGHT - image.height) // 2))
     draw = ImageDraw.Draw(scene)
-    draw.line((0, VIEW_HEIGHT, WIDTH, VIEW_HEIGHT), fill=(43, 57, 79), width=2)
-    draw.rounded_rectangle((20, VIEW_HEIGHT + 23, 77, VIEW_HEIGHT + 66), radius=10, fill=(49, 43, 79))
-    draw.text((31, VIEW_HEIGHT + 34), f"{index:02d}", font=step_font, fill=(142, 120, 255))
-    draw.text((96, VIEW_HEIGHT + 16), title, font=title_font, fill=(237, 242, 255))
-    draw.text((97, VIEW_HEIGHT + 54), description, font=description_font, fill=(150, 166, 190))
+    draw.line((0, VIEW_HEIGHT, WIDTH, VIEW_HEIGHT), fill=(47, 47, 49), width=1)
+    draw.rounded_rectangle((20, VIEW_HEIGHT + 23, 77, VIEW_HEIGHT + 66), radius=8, fill=(38, 38, 40))
+    draw.text((31, VIEW_HEIGHT + 34), f"{index:02d}", font=step_font, fill=(223, 182, 108))
+    draw.text((96, VIEW_HEIGHT + 16), title, font=title_font, fill=(237, 235, 230))
+    draw.text((97, VIEW_HEIGHT + 54), description, font=description_font, fill=(177, 177, 180))
     scenes.append(scene)
     durations.append(duration)
 

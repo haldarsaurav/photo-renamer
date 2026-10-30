@@ -15,7 +15,7 @@ try {
     $issues = New-Object Collections.Generic.List[string]
     foreach ($file in $files) {
         if ($file -match $forbiddenPaths) { $issues.Add($file + ': generated or sensitive file type'); continue }
-        if ($file -match '\.(png|ico|gif)$') { continue }
+        if ($file -match '\.(png|ico|gif|mp4|ttf)$') { continue }
         $contents = (& git show (':' + $file)) -join "`n"
         if ($LASTEXITCODE -ne 0) { throw ('Cannot inspect staged file: ' + $file) }
         foreach ($rule in $patterns) { if ($contents -match $rule.Pattern) { $issues.Add($file + ': ' + $rule.Name) } }

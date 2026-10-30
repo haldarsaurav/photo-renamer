@@ -13,6 +13,22 @@ extensions, and restore the most recent batch with Undo.
 · [Contribute](CONTRIBUTING.md)
 · [MIT license](LICENSE)
 
+## The v1.1 redesign
+
+A graphite workspace, bundled IBM Plex typography, a flat photo-and-sequence
+icon, and amber highlights on the number in each proposed name. The same
+Photos, Folder names, Help, Undo and recovery tools remain available.
+
+[![Photo Renamer changing through the Unslop spacing, color, type and detail passes](docs/images/redesign.gif)](docs/images/redesign.mp4)
+
+[Watch the redesign video](docs/images/redesign.mp4). This presentation
+reconstructs the native interface in HTML and was rendered with the original
+Unslop story tool. The actual app screenshots and working walkthrough follow
+below. Read the [audit, direction and all nine design passes](docs/REDESIGN.md).
+
+Design process: [Unslop](https://github.com/heydamir/unslop) by
+**Damir Sokolovsky ([@heydamir](https://x.com/heydamir))**, CC BY 4.0.
+
 ## See it in action
 
 Real app captures using generated sample photos: preview the names, switch the
@@ -54,8 +70,8 @@ sample data and capture process are in [MEDIA.md](docs/MEDIA.md).
 - **Preview first:** changing the name or number position updates the preview.
 - **Recovery tools:** batch Undo, cancellation with restoration, and recovery
   after an interrupted batch.
-- **Dark interface:** built-in Help & safety, keyboard shortcuts, and an
-  embedded app icon.
+- **Dark workspace:** graphite surfaces, bundled IBM Plex fonts, highlighted
+  number sequences, keyboard shortcuts, Help & safety, and a flat app icon.
 - **Private by design:** no uploads, accounts, telemetry, or network connection
   required. No history or JSON files are placed in photo folders.
 
@@ -183,8 +199,9 @@ keep the supplied config next to the executable.
 | Ctrl+2 | Folder names |
 | Tab | Move between controls |
 
-The interface uses installed Segoe UI Variable Text when available and falls
-back to Segoe UI. No fonts are downloaded.
+IBM Plex Sans and IBM Plex Mono are bundled in the executable and loaded
+privately for the app. No fonts are installed into Windows or downloaded at
+runtime. The font license is included with the download.
 
 ## Build from source
 
@@ -236,7 +253,9 @@ IDs, with read-only repository permissions.
 
 ## Contributing and license
 
-Everyone is welcome to use, modify and redistribute this app, including for
-commercial use, under the **[MIT license](LICENSE)**. See
+Everyone is welcome to use, modify and redistribute the application code,
+including for commercial use, under the **[MIT license](LICENSE)**. Bundled
+IBM Plex fonts use SIL OFL 1.1; the Unslop design process and story carry their
+CC BY 4.0 credit. See [third-party notices](THIRD_PARTY_NOTICES.md),
 [CONTRIBUTING.md](CONTRIBUTING.md) for development and reporting guidance and
 [SECURITY.md](SECURITY.md) for private-data and security reporting guidance.

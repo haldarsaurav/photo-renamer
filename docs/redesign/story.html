@@ -1,0 +1,185 @@
+<!doctype html>
+<!-- Photo Renamer redesign presentation. This reconstructs the native UI;
+     it is not the application and does not rename files.
+     Process and story renderer: Unslop by Damir Sokolovsky (@heydamir),
+     https://github.com/heydamir/unslop, CC BY 4.0.
+     Fonts: IBM Plex, SIL OFL 1.1; see ../../assets/fonts/OFL.txt. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="unslop-steps" content="Spacing, Color and icons, Type and copy, Details">
+<meta name="unslop-frame" content="0 0 1024">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Photo Renamer · Unslop redesign story</title>
+<style>
+@font-face { font-family: Plex; font-weight: 400; src: url('../../assets/fonts/IBMPlexSans-Regular.ttf'); }
+@font-face { font-family: Plex; font-weight: 500; src: url('../../assets/fonts/IBMPlexSans-Medium.ttf'); }
+@font-face { font-family: PlexMono; src: url('../../assets/fonts/IBMPlexMono-Regular.ttf'); }
+* { box-sizing: border-box; }
+html { --bg:#0d121d; --surface:#151d2c; --raised:#1d283b; --border:#2b394f; --text:#edf2ff; --secondary:#96a6be; --accent:#8e78ff; --positive:#6de2ba; background:#0d121d; }
+body { margin:0; padding:0; color:var(--text); background:var(--bg); font:14px/1.4 'Segoe UI Variable Text','Segoe UI',sans-serif; }
+.window { width:1120px; height:922px; background:var(--bg); border:1px solid var(--border); border-radius:8px; overflow:hidden; }
+.titlebar { height:32px; display:flex; align-items:center; gap:8px; padding:0 8px; font-size:12px; position:relative; }
+.titlebar img { width:16px; height:16px; }
+.titlebar img.after { position:absolute; left:8px; opacity:0; }
+.window-controls { margin-left:auto; display:flex; gap:34px; padding-right:12px; font-size:14px; color:var(--secondary); }
+.app { height:890px; padding:20px 26px 16px; display:grid; grid-template-rows:88px 54px 1fr 8px 76px 22px; }
+.brand { display:flex; align-items:flex-start; position:relative; gap:18px; }
+.mark { width:58px; height:58px; margin-top:8px; position:relative; flex:none; }
+.mark img { position:absolute; inset:0; width:100%; height:100%; }
+.mark .after { opacity:0; }
+.wordmark { margin-top:3px; color:var(--accent); font-size:12px; font-weight:700; }
+.tagline { margin-top:2px; font-size:32px; font-weight:700; line-height:46px; }
+.offline { position:absolute; right:0; top:35px; font-size:12px; color:var(--positive); font-weight:700; }
+.nav { display:flex; gap:8px; align-items:flex-start; }
+button { font:700 13px 'Segoe UI Variable Text','Segoe UI',sans-serif; color:var(--text); background:var(--surface); border:1px solid var(--border); border-radius:9px; height:40px; padding:0 12px; white-space:nowrap; }
+.nav button { width:164px; position:relative; }
+.nav button:first-child { width:148px; }
+.nav .active { background:#312b4f; border-color:var(--accent); }
+.nav .active::after { content:''; position:absolute; bottom:0; left:16px; right:16px; height:2px; background:var(--accent); opacity:0; }
+.workspace { display:grid; grid-template-columns:302px 1fr; gap:20px; min-height:0; }
+.sidebar { background:var(--surface); padding:15px; display:flex; flex-direction:column; }
+.side-heading { font-size:12px; font-weight:700; color:var(--secondary); height:31px; display:flex; align-items:center; }
+.side-count { color:var(--secondary); font-size:12px; height:26px; display:flex; align-items:center; }
+.add { width:100%; height:40px; margin-bottom:5px; background:var(--accent); color:#120e28; border-color:transparent; }
+.children { width:100%; height:40px; margin-bottom:4px; }
+.path { display:flex; align-items:center; gap:6px; height:42px; }
+.path input { width:calc(100% - 48px); height:27px; border:1px solid #667180; background:var(--raised); color:var(--text); padding:4px; font:14px 'Segoe UI',sans-serif; }
+.path input::placeholder { color:var(--secondary); opacity:0; }
+.path button { width:40px; height:38px; flex:none; }
+.folder-list { margin-top:8px; }
+.folder { height:37px; padding:0 8px; display:flex; align-items:center; }
+.manage { display:flex; gap:8px; margin-top:auto; }
+.manage button { min-width:0; flex:1; font-size:12px; padding:0 4px; }
+.main { min-width:0; display:grid; grid-template-rows:45px 36px 61px 31px 1fr 37px; }
+h1 { margin:0; font-size:26px; line-height:45px; font-weight:700; }
+.description { color:var(--secondary); display:flex; align-items:center; }
+.settings { display:flex; align-items:center; gap:0; background:var(--surface); padding:12px; margin:4px 0; }
+.settings label { width:133px; font-size:12px; font-weight:700; color:var(--secondary); flex:none; }
+select { width:268px; height:27px; color:var(--text); background:var(--raised); border:1px solid #88909c; font:14px 'Segoe UI',sans-serif; }
+.preview-label { font-size:12px; color:var(--secondary); font-weight:700; display:flex; align-items:center; }
+.table { background:var(--surface); overflow:hidden; }
+.row { display:grid; grid-template-columns:26% 30% 44%; height:38px; border-bottom:1px solid var(--border); align-items:center; }
+.row:nth-child(odd):not(.table-head) { background:#182131; }
+.cell { padding:0 10px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.table-head { height:41px; color:var(--secondary); background:var(--raised); font-size:12px; text-transform:uppercase; }
+.table-meta { color:var(--secondary); font-size:12px; display:flex; align-items:center; }
+.footer { display:flex; align-items:center; gap:8px; padding-top:14px; }
+.status { flex:1; color:var(--secondary); font-size:12px; }
+.footer button { height:56px; width:156px; }
+.footer .disabled { color:#5b6c87; }
+.footer .primary { width:180px; background:var(--accent); color:#120e28; border-color:transparent; }
+.privacy { font-size:11px; color:var(--secondary); display:flex; align-items:center; }
+/* Pass 1: spacing across the entire screen. */
+.s1 .window { height:882px; }
+.s1 .app { height:850px; padding:24px; grid-template-rows:64px 48px 1fr 8px 64px 24px; }
+.s1 .mark { width:40px; height:40px; margin-top:4px; }
+.s1 .brand { gap:16px; }
+.s1 .wordmark { margin-top:0; }
+.s1 .tagline { margin-top:0; }
+.s1 .offline { top:0; }
+.s1 .nav button { height:36px; width:144px; }
+.s1 .nav button:first-child { width:104px; }
+.s1 .workspace { grid-template-columns:280px 1fr; gap:24px; }
+.s1 .sidebar { padding:16px; }
+.s1 .side-heading,.s1 .side-count { height:28px; }
+.s1 .add,.s1 .children { height:36px; margin-bottom:8px; }
+.s1 .path { height:40px; gap:8px; }
+.s1 .path input { width:calc(100% - 48px); height:27px; }
+.s1 .path button { width:40px; height:36px; }
+.s1 .folder { height:40px; padding:0 12px; }
+.s1 .manage { gap:4px; }
+.s1 .manage button { height:36px; }
+.s1 .main { grid-template-rows:36px 36px 64px 32px 1fr 32px; }
+.s1 h1 { line-height:36px; }
+.s1 .settings { padding:16px; margin:0 0 8px; }
+.s1 .settings label { width:144px; }
+.s1 select { width:280px; }
+.s1 .row { height:40px; grid-template-columns:24% 30% 46%; }
+.s1 .table-head { height:40px; }
+.s1 .cell { padding:0 12px; }
+.s1 .footer { padding-top:8px; padding-bottom:8px; }
+.s1 .footer button { height:48px; }
+/* Pass 2: one neutral ramp, one accent, and a flat product mark. */
+.s2 { --bg:#161617; --surface:#1c1c1d; --raised:#262628; --border:#2f2f31; --text:#edebe6; --secondary:#949499; --accent:#dfb66c; --positive:#949499; background:#161617; }
+.s2 .wordmark { color:var(--text); }
+.s2 .row:nth-child(odd):not(.table-head) { background:var(--surface); }
+.s2 .nav .active { background:var(--raised); border-color:var(--border); }
+.s2 .add { background:var(--surface); color:var(--text); border-color:var(--border); }
+.s2 .footer .primary { background:var(--text); color:var(--bg); }
+.s2 .footer .disabled { color:var(--secondary); }
+.s2 .mark .before { opacity:0; }
+.s2 .mark .after { opacity:1; }
+.s2 .titlebar img.before { opacity:0; }
+.s2 .titlebar img.after { opacity:1; }
+.s2 .settings label,.s2 .table-head,.s2 .description { color:#b1b1b4; }
+/* Pass 3: precise type, sentence case and copy about the actual task. */
+.s3 body,.s3 button,.s3 select,.s3 input { font-family:Plex,'Segoe UI',sans-serif; font-weight:400; }
+.s3 .wordmark { font-size:24px; line-height:28px; font-weight:400; }
+.s3 .tagline { color:#b1b1b4; font-size:13px; line-height:20px; font-weight:400; }
+.s3 .offline { font-size:12px; font-weight:400; }
+.s3 h1 { font-size:27px; font-weight:400; }
+.s3 .side-heading { font-size:16px; font-weight:500; color:var(--text); }
+.s3 .settings label { font-size:14px; font-weight:400; }
+.s3 .preview-label { font-weight:400; }
+.s3 .table-head { font-size:13px; text-transform:none; }
+.s3 .row:not(.table-head) .cell:nth-child(2),.s3 .row:not(.table-head) .cell:nth-child(3),.s3 .table-meta { font-family:PlexMono,monospace; font-size:13px; }
+.s3 .row:not(.table-head) .cell:nth-child(2) { color:#b1b1b4; }
+.s3 .privacy { font-size:12px; }
+/* Pass 4: unobtrusive tabs, focus, exact previews and the sequence signature. */
+.s4 button { border-radius:8px; }
+.s4 .nav button { border-color:transparent; background:transparent; color:#b1b1b4; }
+.s4 .nav .active { color:var(--text); background:transparent; border-color:transparent; }
+.s4 .nav .active::after { opacity:1; }
+.s4 .sequence { color:var(--accent); }
+.s4 .path input::placeholder { opacity:1; }
+button:focus-visible,select:focus-visible,input:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+</style>
+</head>
+<body>
+<div class="window">
+  <div class="titlebar"><img class="before" src="icon-before.png" alt=""><img class="after" src="../../app.png" alt="">Photo Renamer<div class="window-controls"><span>−</span><span>□</span><span>×</span></div></div>
+  <div class="app">
+    <header class="brand" data-gap="shell">
+      <div class="mark" data-slop="Gradient icon"><img class="before" src="icon-before.png" alt=""><img class="after" src="../../app.png" alt="Photo Renamer icon"></div>
+      <div><div class="wordmark swap" data-at="3"><span class="from">PHOTO RENAMER</span><span class="to">Photo Renamer</span></div>
+        <div class="tagline swap" data-at="3" data-slop="Generic slogan"><span class="from">Give every memory a name.</span><span class="to">Batch naming for your photo archive</span></div></div>
+      <span class="offline swap" data-at="3"><span class="from">PRIVATE / OFFLINE</span><span class="to">Works offline</span></span>
+    </header>
+    <nav class="nav" data-gap="shell"><button class="active" data-radius>Photos</button><button>Folder names</button><button>Help &amp; safety</button></nav>
+    <div class="workspace" data-gap="shell">
+      <aside class="sidebar">
+        <div class="side-heading swap" data-at="3" data-gap="sidebar"><span class="from">YOUR FOLDERS</span><span class="to">Folders</span></div>
+        <div class="side-count swap" data-at="3" data-gap="sidebar"><span class="from">2 folders selected · drag to add more</span><span class="to">2 folders in this batch</span></div>
+        <button class="add" data-radius data-gap="sidebar">Add folders</button>
+        <button class="children">Add immediate subfolders</button>
+        <div class="path" data-gap="sidebar"><input placeholder="Paste folder path" aria-label="Folder path"><button aria-label="Add path">+</button></div>
+        <div class="folder-list" data-gap="sidebar"><div class="folder">✈️ Holiday</div><div class="folder">🌲 Weekend</div></div>
+        <div class="manage"><button>Refresh</button><button>Remove</button><button>Clear</button></div>
+      </aside>
+      <main class="main">
+        <h1 class="swap" data-at="3" data-gap="main"><span class="from">Make every photo belong.</span><span class="to">Rename photos</span></h1>
+        <div class="description" data-gap="main">Use each folder name, with a number at the start or end</div>
+        <div class="settings" data-gap="main"><label for="position">Number position</label><select id="position"><option>End: FolderName_1.jpg</option></select></div>
+        <div class="preview-label swap" data-at="3" data-gap="main"><span class="from">PHOTO PREVIEW</span><span class="to">Preview / Amber marks the number</span></div>
+        <div class="table" data-gap="main">
+          <div class="row table-head"><div class="cell">Folder</div><div class="cell">Current name</div><div class="cell">New name</div></div>
+          <div class="row"><div class="cell">✈️ Holiday</div><div class="cell">IMG_0001.jpg</div><div class="cell">✈️ Holiday<span class="sequence">_1</span>.jpg</div></div>
+          <div class="row"><div class="cell">✈️ Holiday</div><div class="cell">IMG_0002.jpg</div><div class="cell">✈️ Holiday<span class="sequence">_2</span>.jpg</div></div>
+          <div class="row"><div class="cell">✈️ Holiday</div><div class="cell">IMG_0010.png</div><div class="cell">✈️ Holiday<span class="sequence">_3</span>.png</div></div>
+          <div class="row"><div class="cell">✈️ Holiday</div><div class="cell">IMG_0011.jpg</div><div class="cell">✈️ Holiday<span class="sequence">_4</span>.jpg</div></div>
+          <div class="row"><div class="cell">🌲 Weekend</div><div class="cell">IMG_0001.jpg</div><div class="cell">🌲 Weekend<span class="sequence">_1</span>.jpg</div></div>
+          <div class="row"><div class="cell">🌲 Weekend</div><div class="cell">IMG_0002.jpg</div><div class="cell">🌲 Weekend<span class="sequence">_2</span>.jpg</div></div>
+          <div class="row"><div class="cell">🌲 Weekend</div><div class="cell">IMG_0010.png</div><div class="cell">🌲 Weekend<span class="sequence">_3</span>.png</div></div>
+          <div class="row"><div class="cell">🌲 Weekend</div><div class="cell">IMG_0011.jpg</div><div class="cell">🌲 Weekend<span class="sequence">_4</span>.jpg</div></div>
+        </div>
+        <div class="table-meta">8 photos · 8 to rename · Direct photos only</div>
+      </main>
+    </div>
+    <div></div>
+    <footer class="footer"><div class="status">Review the preview, then confirm the batch</div><button class="disabled">Cancel &amp; restore</button><button class="disabled">Undo last batch</button><button class="primary" data-radius>Rename photos</button></footer>
+    <div class="privacy swap" data-at="3"><span class="from">LOCAL FILES ONLY · NO UPLOADS · NO LOG FILES IN YOUR PHOTO FOLDERS</span><span class="to">Preview first, then confirm · Undo history stays in your Windows profile · F1 for help</span></div>
+  </div>
+</div>
+</body>
+</html>
