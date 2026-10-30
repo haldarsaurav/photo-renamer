@@ -1,0 +1,27 @@
+# Build products and local release packages
+/.build/
+/dist/
+*.exe
+*.dll
+*.pdb
+*.zip
+
+# Generated test data may contain local filesystem paths.
+/tests/*
+!/tests/UiCheck.cs
+
+# Local state, credentials, and editor files
+*.dat
+*.dat.new
+.env
+.env.*
+*.key
+*.pem
+*.pfx
+*.user
+*.suo
+.vs/
+.vscode/
+.idea/
+Thumbs.db
+Desktop.ini
